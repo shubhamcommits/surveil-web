@@ -8,22 +8,7 @@ const url = {
 export const environment = {
   production: false,
   BASE_URL: `${url.protocol}://${url.domain}:3000`,
-  BASE_API_URL: `${url.protocol}://${url.domain}:3000/api/v1`,
-  CD_BASE_HOST: `172.26.38.126`,
-  CG_BASE_HOST: `172.25.64.209`,
-  GA_BASE_HOST: `172.25.118.125`,
-  KE_BASE_HOST: `172.23.7.102`,
-  MG_BASE_HOST: `172.25.128.181`,
-  MW_BASE_HOST: `172.26.128.101`,
-  NE_BASE_HOST: `172.26.193.149`,
-  NG_BASE_HOST: `172.24.6.215`,
-  NGPSB_BASE_HOST: `172.24.30.11`,
-  RW_BASE_HOST: `172.27.193.85`,
-  SC_BASE_HOST: `172.25.192.170`,
-  TD_BASE_HOST: `172.25.49.170`,
-  TZ_BASE_HOST: `172.27.0.142`,
-  UG_BASE_HOST: `172.27.98.166`,
-  ZM_BASE_HOST: `172.27.128.119`,
+  BASE_API_URL: `${url.protocol}://${url.domain}:3000/api/v1`
 };
 
 /*
