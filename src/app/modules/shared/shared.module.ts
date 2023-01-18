@@ -19,6 +19,9 @@ import { SweetAlert2Module, SweetAlert2LoaderService } from '@sweetalert2/ngx-sw
 // JSON Viewer Module
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
+// NGX Skeleton Module
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+
 /**
  * Components
  */
@@ -59,6 +62,7 @@ const routes: Routes = [];
     NgChartsModule,
     NgxUiLoaderModule,
     NgxJsonViewerModule,
+    NgxSkeletonLoaderModule,
     SweetAlert2Module.forRoot(),
     RouterModule.forChild(routes),
   ],
@@ -71,7 +75,8 @@ const routes: Routes = [];
     DoughnutGraphComponent,
     HorizontalBarGraphComponent,
     SweetAlert2Module,
-    NgxJsonViewerModule
+    NgxJsonViewerModule,
+    NgxSkeletonLoaderModule
   ],
   providers: [
     ThemeService,

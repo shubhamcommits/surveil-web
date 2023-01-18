@@ -12,4 +12,11 @@ export class SearchBarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  searchTerm: any;
+  isExpanded = false;
+
+  performSearch() {
+    // perform the search using the searchTerm value
+  }
+
 }

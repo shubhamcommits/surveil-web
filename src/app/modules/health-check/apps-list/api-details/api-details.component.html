@@ -20,33 +20,37 @@
             <div class="card w-96 text-dark">
                 <div class="card-body">
                     <h2 class="card-title">Environment</h2>
-                    <p><b>Authorization from UM:</b>
-                        <mat-slide-toggle [checked]="api?.authorization_from_um"></mat-slide-toggle>
-                    </p>
-                    <p><b>Status:</b>
-                        <mat-slide-toggle [checked]="api?.active" (change)="changeApiStatus($event)"></mat-slide-toggle>
-                    </p>
-                    <p><b>Time Interval:</b> {{ api?.time_interval }}</p>
+                    <p><b>Service Name:</b> {{ api?._service?.name }}</p>
+                    <p><b>Application Name:</b> {{ api?._app?.name }}</p>
+                    <p><b>API Success Count:</b> {{ api?.response?.length - api?.failed_count }}</p>
+                    <p><b>API Failed Count:</b> {{ api?.failed_count }}</p>
                     <p><b>Last Run:</b> {{api?.last_run_time | date: 'medium' }}</p>
                     <p><b>Created Date:</b> {{api?.created_date | date: 'medium' }}</p>
                     <div class="card-actions justify-center">
-                        <button
-                            class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Configure</button>
+                        <!-- <button
+                            class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Configure</button> -->
                     </div>
                 </div>
             </div>
             <div class="card w-96 text-dark">
                 <div class="card-body">
-                    <h2 class="card-title">Scheduler Details</h2>
+                    <h2 class="card-title">API Details</h2>
+                    <p><b>Status:</b>
+                        <mat-slide-toggle [checked]="api?.active" (change)="changeApiStatus($event)"></mat-slide-toggle>
+                    </p>
                     <p><b>Name:</b> {{api?.name}}</p>
                     <p><b>Method:</b> {{ api?.method }}</p>
-                    <p><b>Opco:</b> {{ api?.opco }}</p>
                     <p><b>End Point:</b> {{ api?.end_point }}</p>
-                    <p><b>Headers:</b> {{api?.headers | json }}</p>
-                    <p><b>Body:</b> {{api?.body | json }}</p>
+                    <p><b>Time Interval:</b> {{ api?.time_interval }}</p>
+                    <!-- <p><b>Advanced Details:</b> View & modify advanced details</p> -->
+                    <!-- <p><b>Headers:</b> View Headers</p>
+                    <p><b>Body:</b> View Body</p>
+                    <p><b>Query Params:</b> View Query Params</p>
+                    <p><b>cURL:</b> View cURL</p> -->
                     <div class="card-actions justify-center">
                         <button
-                            class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Configure</button>
+                            class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                            (click)="openApiAdvancedDetailDialog(api)">Configure Advanced Details</button>
                     </div>
                 </div>
             </div>

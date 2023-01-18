@@ -36,44 +36,49 @@
         <div class="mt-6 mb-6 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-6">
             <div class="card w-96 text-dark">
                 <div class="card-body">
-                    <h2 class="card-title">Base Environment</h2>
-                    <p><b>Service Name:</b> {{ service?.name }}</p>
-                    <p><b>App Name:</b> {{ service?._app?.name }}</p>
-                    <div class="card-actions justify-center">
+                    <h2 class="card-title">Environment Details</h2>
+                    <p><b>Health:</b> {{ service?.last_status }}</p>
+                    <p><b>Application Name:</b> {{ service?._app?.name }}</p>
+                    <!-- <div class="card-actions justify-center">
                         <button
                             class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Edit
                             Configuration</button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="card w-96 text-dark">
                 <div class="card-body">
-                    <h2 class="card-title">Scheduler Details</h2>
-                    <p><b>Threshold:</b>  {{ service?.threshold || 0 }}</p>
-                    <p><b>Health:</b> {{ service?.last_status }}</p>
-                    <div class="card-actions justify-center">
+                    <h2 class="card-title">Service Details</h2>
+                    <p><b>Service Threshold:</b>  
+                        <span *ngIf="!isServiceThresholdEditable" (click)="isServiceThresholdEditable = !isServiceThresholdEditable" class="cursor-pointer"> {{ service?.threshold || 0 }}%</span>
+                        <input class="form-input border-2 py-2 px-3 block w-full leading-5 rounded-md transition duration-150 ease-in-out sm:text-sm sm:leading-5" 
+                        *ngIf="isServiceThresholdEditable" (keyup.enter)="onChangeServiceThreshold($event)" [(ngModel)]="service.threshold" type="number">
+                    </p>
+                    <p><b>Service Name:</b>
+                        <span *ngIf="!isServiceNameEditable" (click)="isServiceNameEditable = !isServiceNameEditable" class="cursor-pointer"> {{ service?.name }}</span>
+                        <input class="form-input border-2 py-2 px-3 block w-full leading-5 rounded-md transition duration-150 ease-in-out sm:text-sm sm:leading-5" 
+                        *ngIf="isServiceNameEditable" (keyup.enter)="onChangeServiceName($event)" [(ngModel)]="service.name">
+                    </p>
+                    <!-- <div class="card-actions justify-center">
                         <button
                             class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Configure</button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="card w-96 text-dark">
                 <div class="card-body">
-                    <h2 class="card-title">API Metrics</h2>
+                    <h2 class="card-title">Service Report</h2>
                     <mat-form-field class="full-width">
-                        <mat-label>Graph</mat-label>
+                        <mat-label>Generate and export data for</mat-label>
                         <mat-select [value]="'line-chart'">
-                            <mat-option value="line-chart">Line Chart</mat-option>
+                            <mat-option value="line-chart">Last 24 Hours</mat-option>
+                            <mat-option value="line-chart">This Week</mat-option>
+                            <mat-option value="line-chart">This Month</mat-option>
+                            <mat-option value="line-chart">Custom Span</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <div class="card-actions justify-center">
-                        <!-- Time Series Graph -->
-                        <!-- <app-custom-line-graph *ngIf="data.length > 0" [width]="300" [height]="300" [data]="chartData"
-                            [labels]="chartLabels" [legendNames]="chartLegends">
-                        </app-custom-line-graph> -->
 
-                        <!-- <app-doughnut-graph *ngIf="chartData.length > 0" [data]="chartData"></app-doughnut-graph> -->
-                        <!-- Time Series Graph -->
                     </div>
                 </div>
             </div>
@@ -92,6 +97,6 @@
         <img class="loading-placeholder" src="assets/svgs/no_results.svg">
     </ng-container>
 
-    <app-common-table *ngIf="data.length > 0" [data]="data" [columns]="columns" (row)="apiRowData($event)"> </app-common-table>
+    <app-common-table *ngIf="data.length > 0" [data]="data" [columns]="columns"></app-common-table>
 
 </ng-container>

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Injector, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { AppService } from 'src/app/modules/shared/services/app.service';
 import Swal from 'sweetalert2';
 
@@ -16,13 +17,23 @@ export class AppDetailsComponent implements OnInit {
   ) { }
 
   // App ID
-  appId = this._Route.snapshot.paramMap.get('appId');
+  appId = this._Route.snapshot.paramMap.get('appId')
 
   services: any = []
 
+  // Is loading behaviour
+  isLoading$ = new BehaviorSubject(false)
+
   async ngOnInit() {
+
+    // Enable the Loading Subject
+    this.isLoading$.next(true)
+
+    // Fetch the list of the services
     this.services = await this.fetchUserServiceFunction()
-    console.log("Services" , this.services)
+
+    // Disable the Loading Subject
+    this.isLoading$.next(false)
   }
 
   fetchUserServiceFunction() {
@@ -72,7 +83,6 @@ export class AppDetailsComponent implements OnInit {
       if (result.isConfirmed) {
         this.removeServiceFunction(serviceId)
           .then((service) => {
-            console.log(service)
             Swal.fire(
               'Deleted!',
               'Your service has been removed from the system!',

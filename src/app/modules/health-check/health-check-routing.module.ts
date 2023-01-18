@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NavbarComponent } from '../shared/components/navbar/navbar.component';
 import { AppDetailsComponent } from './apps-list/app-details/app-details.component';
 import { AppsListComponent } from './apps-list/apps-list.component';
-import { ApiDetailsComponent } from './apps-list/service-details/api-details/api-details.component';
+import { ApiDetailsComponent } from './apps-list/api-details/api-details.component';
 import { ServiceDetailsComponent } from './apps-list/service-details/service-details.component';
 import { HealthCheckHeaderComponent } from './health-check-header/health-check-header.component';
 

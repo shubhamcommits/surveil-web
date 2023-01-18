@@ -20,9 +20,7 @@ export class CreateApiModalComponent implements OnInit {
     this.form = this._FormBuilder.group({
       name: this.name,
       method: this.method,
-      opco: this.opco,
-      end_point: this.end_point,
-      authorization_via_um: this.authorization_via_um
+      end_point: this.end_point
     })
   }
 
@@ -35,9 +33,7 @@ export class CreateApiModalComponent implements OnInit {
   // Define Form Controls
   name = new FormControl(null, [Validators.required, Validators.nullValidator])
   method = new FormControl(null, [Validators.required, Validators.nullValidator])
-  opco = new FormControl(null, [Validators.required, Validators.nullValidator])
   end_point = new FormControl(null, [Validators.required, Validators.nullValidator])
-  authorization_via_um: any = new FormControl(null, [Validators.required, Validators.nullValidator])
 
   ngOnInit() {
 
@@ -47,9 +43,7 @@ export class CreateApiModalComponent implements OnInit {
     this._CreateApiComponentDialogRef.close({
       name: this.name.value,
       method: this.method,
-      opco: this.opco,
       end_point: this.end_point.value,
-      authorization_via_um: (this.authorization_via_um == 'Yes') ? true : false
     })
   }
 

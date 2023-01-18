@@ -11,8 +11,9 @@ import { AppDetailsComponent } from './apps-list/app-details/app-details.compone
 import { CreateServiceComponent } from './apps-list/app-details/create-service/create-service.component';
 import { ServiceDetailsComponent } from './apps-list/service-details/service-details.component';
 import { CreateApiComponent } from './apps-list/service-details/create-api/create-api.component';
-import { ApiDetailsComponent } from './apps-list/service-details/api-details/api-details.component';
+import { ApiDetailsComponent } from './apps-list/api-details/api-details.component';
 import { CreateApiModalComponent } from './apps-list/service-details/create-api/create-api-modal/create-api-modal.component';
+import { ApiAdvancedDetailsComponent } from './apps-list/api-details/api-advanced-details/api-advanced-details.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { CreateApiModalComponent } from './apps-list/service-details/create-api/
     ServiceDetailsComponent,
     CreateApiComponent,
     ApiDetailsComponent,
-    CreateApiModalComponent
+    CreateApiModalComponent,
+    ApiAdvancedDetailsComponent
   ],
   imports: [
     CommonModule,

@@ -23,15 +23,11 @@ export class CommonTableComponent implements OnInit {
   // Table Title
   @Input('title') title: any = ''
 
+  // Fetch App ID
   appId = this._Route.snapshot.paramMap.get('appId')
+
+  // Fetch Service ID
   serviceId = this._Route.snapshot.paramMap.get('serviceId')
-   // // Redirect URL
-   // redirectURL: any
-
- // API ID
- apiId = this._Route.snapshot.paramMap.get('apiId')
- @Output('remove') removeAppEmitter = new EventEmitter<any>()
-
 
   // Datasource
   dataSource = new MatTableDataSource([])
@@ -84,31 +80,28 @@ export class CommonTableComponent implements OnInit {
    * This function is responsible for emitting the row data to the parent components
    * @param event 
    */
-  emitRowEvent(event: any){
+  emitRowEvent(event: any) {
     this.rowDataEmitter.emit(event)
     // console.log(event)
   }
 
-  checkCellDataType(cellData: any){
-    if(cellData.includes('date'))
+  checkCellDataType(cellData: any) {
+    if (cellData.includes('date'))
       return 'date'
     else if (cellData.includes('last_status'))
       return 'status'
     else if (cellData.includes('json') || cellData.includes('data') || cellData.includes('config') || cellData.includes('headers'))
       return 'json'
-    else if(cellData.includes('delete'))
+    else if (cellData.includes('delete'))
       return 'delete'
-    else if(cellData.includes('view'))
+    else if (cellData.includes('view'))
       return 'view'
     else
-    return 'default'
+      return 'default'
   }
 
-  viewApi(event :any){
-   console.log("Function Working!!" + event)
-      this._Router.navigate(['/health-check', 'apps', this.appId, 'services', this.serviceId, 'api', event._id])
-      // this.openApiDetailDialog(event)
-    
+  viewApi(event: any) {
+    this._Router.navigate(['/health-check', 'apps', this.appId, 'services', this.serviceId, 'api', event._id])
   }
 
   removeApiFunction(appId: any) {
@@ -124,10 +117,10 @@ export class CommonTableComponent implements OnInit {
     })
   }
 
-  async removeApp(appId: any) {
+  async removeApi(event: any) {
     Swal.fire({
       title: 'Are you sure?',
-      text: "This will remove the api and all the related information about api",
+      text: "This will remove the API and all the related information about it!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#1d4ed8',
@@ -135,17 +128,19 @@ export class CommonTableComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.removeApiFunction(appId)
+        this.removeApiFunction(event._id)
           .then((api) => {
-            console.log(api);
             Swal.fire(
               'Deleted!',
               'Your api has been removed from the system!',
               'success'
             ).then(() => {
-              this.removeAppEmitter.emit(api)
-           
-              // this._Router.navigate(['/health-check' , 'apps' , this.appId , 'services' , this.serviceId ])
+              let index = this.data.findIndex((api: any) => api._id == event._id)
+              if (index != -1)
+                this.data.splice(index, 1)
+
+              // Populate datasource
+              this.populateDatasource(this.data)
             })
           })
       }

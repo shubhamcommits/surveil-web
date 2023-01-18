@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { AppService } from 'src/app/modules/shared/services/app.service';
-import { ApiDetailsComponent } from './api-details/api-details.component';
+import { ApiDetailsComponent } from '../api-details/api-details.component';
 
 @Component({
   selector: 'app-service-details',
@@ -24,7 +24,7 @@ export class ServiceDetailsComponent implements OnInit {
   serviceId = this._Route.snapshot.paramMap.get('serviceId')
 
   // Columns
-  columns = ['name', 'opco', 'method', 'end_point', 'time_interval', 'view', 'last_status', 'delete']
+  columns = ['name', 'method', 'end_point', 'time_interval', 'view', 'last_status', 'delete']
 
   // Service Details
   service: any
@@ -45,13 +45,19 @@ export class ServiceDetailsComponent implements OnInit {
   unhealthy_apis = 0
 
   // Chart Data - Multidimensional Array
-  chartData: any = []
+  chartData: any = [[]]
 
   // Chart Labels
   chartLabels: any = []
 
   // Chart Legends
   chartLegends: any = []
+
+  // Boolean variable to check the status of service name
+  isServiceNameEditable = false
+
+  // Boolean variable to check the status of service threshold
+  isServiceThresholdEditable = false
 
   // Is loading behaviour
   isLoading$ = new BehaviorSubject(false)
@@ -81,15 +87,16 @@ export class ServiceDetailsComponent implements OnInit {
         this.unhealthy_apis = this.unhealthy_apis + 1
     })
 
-    this.chartData = [this.healthy_apis, this.healthy_apis]
-
-    // console.log(this.chartData, this.chartLabels)
+    // this.chartData = [this.healthy_apis, this.healthy_apis]
 
     // Append the legends
-    this.chartLegends = ['Status Code']
+    // this.chartLegends = ['Status Code']
 
     // Calculate the success rate
     this.success_rate = (this.healthy_apis / this.data.length) * 100
+
+    // This function updates the whole service status
+    await this.updateServiceHealthStatus()
 
     // Stop the Loader
     this.isLoading$.next(false)
@@ -118,7 +125,19 @@ export class ServiceDetailsComponent implements OnInit {
           resolve(res['service'])
         })
         .catch((err) => {
-         
+          reject(err)
+        })
+    })
+  }
+
+  updateServiceFunction(serviceData: any) {
+    return new Promise((resolve, reject) => {
+      let appService = this._Injector.get(AppService)
+      appService.updateService(this.serviceId, serviceData)
+        .then((res: any) => {
+          resolve(res['service'])
+        })
+        .catch((err) => {
           reject(err)
         })
     })
@@ -154,12 +173,88 @@ export class ServiceDetailsComponent implements OnInit {
   }
 
   /**
-   * This function is responsible for consuming row data from the child components
+   * This function updates the service name of a particular service
    * @param event 
    */
-  apiRowData(event: any) {
-    this._Router.navigate(['/health-check', 'apps', this.appId, 'services', this.serviceId, 'api', event._id])
-    // this.openApiDetailDialog(event)
+  onChangeServiceName(event: any) {
+    if (event.keyCode === 13) {
+
+      // Change the edit status
+      this.isServiceNameEditable = !this.isServiceNameEditable
+
+      // Pass service data
+      let serviceData = {
+        name: event.target.value
+      }
+
+      // Call the service function
+      this.updateServiceFunction(serviceData)
+    }
+  }
+
+  /**
+   * This function changes the threshold of a service
+   * @param event 
+   */
+  onChangeServiceThreshold(event: any) {
+    if (event.keyCode === 13) {
+
+      // Change the edit status
+      this.isServiceThresholdEditable = !this.isServiceThresholdEditable
+
+      this.service.threshold = event.target.value
+
+      // Updates the Service Status and Threshold Value
+      this.updateServiceHealthStatus()
+    }
+  }
+
+  async updateServiceHealthStatus() {
+
+    if (this.success_rate < this.service.threshold) {
+
+      // Pass service data
+      let serviceData = {
+        threshold: this.service.threshold,
+        last_status: 'unhealthy'
+      }
+
+      // Update the Status
+      this.service.last_status = 'unhealthy'
+
+      // Call the service function
+      this.updateServiceFunction(serviceData)
+
+    } else if (this.success_rate >= this.service.threshold) {
+
+      // Pass service data
+      let serviceData = {
+        threshold: this.service.threshold,
+        last_status: 'healthy'
+      }
+
+      // Update the Status
+      this.service.last_status = 'healthy'
+
+      // Call the service function
+      this.updateServiceFunction(serviceData)
+
+    } else {
+
+      // Pass service data
+      let serviceData = {
+        threshold: this.service.threshold,
+        last_status: 'broken'
+      }
+
+      // Update the Status
+      this.service.last_status = 'broken'
+
+      // Call the service function
+      this.updateServiceFunction(serviceData)
+
+    }
+
   }
 
 }

@@ -1,4 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { AppService } from 'src/app/modules/shared/services/app.service';
 
 @Component({
@@ -12,10 +13,22 @@ export class AppsListComponent implements OnInit {
     private _Injector: Injector,
   ) { }
 
+  // Apps List
   apps: any = []
 
+  // Is loading behaviour
+  isLoading$ = new BehaviorSubject(false)
+
   async ngOnInit() {
+
+    // Enable the Loading Subject
+    this.isLoading$.next(true)
+
+    // Fetch the list of the apps
     this.apps = await this.fetchUserAppsServiceFunction()
+
+    // Disable the Loading Subject
+    this.isLoading$.next(false)
   }
 
   /**
@@ -35,16 +48,30 @@ export class AppsListComponent implements OnInit {
     })
   }
 
+  /**
+   * This functions pushes the app when receiving the event from the child component
+   * @param $event 
+   */
   newApp($event: any) {
     this.apps.unshift($event)
   }
 
+  /**
+   * This functions removes the app when receiving the event from the child component
+   * @param $event 
+   */
   removeApp($event: any){
     let index = this.apps.findIndex((app: any) => app._id == $event)
     if (index != -1)
       this.apps.splice(index, 1)
   }
 
+  /**
+   * Track By Element
+   * @param index 
+   * @param element 
+   * @returns 
+   */
   trackByElement(index: number, element: any): number {
     return element.id
   }

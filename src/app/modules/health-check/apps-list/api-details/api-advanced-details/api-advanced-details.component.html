@@ -1,0 +1,121 @@
+<mat-dialog-actions class="mb-2">
+    <h2 mat-dialog-title>{{ name.value || 'API' }} - Advanced Details</h2>
+    <div class="same-line">
+        <button (click)="close()" matTooltip="Close Modal"
+            class="rounded-lg text-xs btn-square text-white bg-gradient-to-r mr-2 ml-2 from-orange-400 via-orange-500 to-orange-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-orange-300 dark:focus:ring-orange-800">
+            <mat-icon>minimize</mat-icon>
+        </button>
+        <button (click)="close()" matTooltip="Close Modal"
+            class="rounded-lg btn-square text-white bg-gradient-to-r mr-2 ml-2 from-orange-400 via-orange-500 to-orange-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-orange-300 dark:focus:ring-orange-800">
+            <mat-icon>check_box_outline_blank</mat-icon>
+        </button>
+        <button (click)="close()" matTooltip="Close Modal"
+            class="rounded-lg btn-square text-white bg-gradient-to-r mr-2 ml-2 from-orange-400 via-orange-500 to-orange-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-orange-300 dark:focus:ring-orange-800">
+            <mat-icon>cancel</mat-icon>
+        </button>
+    </div>
+</mat-dialog-actions>
+<mat-dialog-content>
+    <mat-stepper [linear]="false" #stepper>
+        <mat-step [stepControl]="form" label="Basic Details">
+            <form class="mt-2" [formGroup]="form">
+                <mat-form-field class="full-width">
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Please provide your API Name" formControlName="name">
+                    <mat-error *ngIf="!name.valid && name.touched">
+                        {{ titleAlert }}
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <mat-label>Method</mat-label>
+                    <mat-select [(value)]="method" formControlName="method">
+                        <mat-option value="GET">GET</mat-option>
+                        <mat-option value="POST">POST</mat-option>
+                        <mat-option value="PUT">PUT</mat-option>
+                        <mat-option value="DELETE">DELETE</mat-option>
+                        <mat-option value="PATCH">PATCH</mat-option>
+                        <mat-option value="COPY">COPY</mat-option>
+                        <mat-option value="HEAD">HEAD</mat-option>
+                        <mat-option value="OPTIONS">OPTIONS</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="!method.valid && method.touched">
+                        {{ titleAlert }}
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <mat-label>End Point</mat-label>
+                    <input matInput placeholder="Please fill the end-point of the API" formControlName="end_point">
+                    <mat-error *ngIf="!end_point.valid && end_point.touched">
+                        {{ titleAlert }}
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <mat-label>Time Interval</mat-label>
+                    <input matInput
+                        placeholder="We use Human Interval for specifying the intervals. We supports the following units: seconds, minutes, hours, days,weeks, months. Ex - 10 seconds"
+                        formControlName="time_interval">
+                    <mat-error *ngIf="!time_interval.valid && time_interval.touched">
+                        {{ titleAlert }}
+                    </mat-error>
+                </mat-form-field>
+                <div class="same-line">
+                    <button matStepperNext
+                        class="save-button text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Next</button>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step label="Headers">
+            <form class="mt-2" [formGroup]="headersForm">
+                <mat-form-field class="full-width">
+                    <mat-label>Authorization from Custom API</mat-label>
+                    <mat-select [(value)]="method" formControlName="authorization_from_api">
+                        <mat-option value="GET">GET</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <mat-label>Headers</mat-label>
+                    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                        cdkAutosizeMaxRows="50" placeholder="Please provide the headers for the API"
+                        formControlName="headers"></textarea>
+                </mat-form-field>
+                <div class="same-line">
+                    <button matStepperPrevious
+                        class="save-button text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Back</button>
+                    <button matStepperNext
+                        class="save-button text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Next</button>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step label="Body">
+            <form class="mt-2" [formGroup]="bodyForm">
+                <mat-form-field class="full-width">
+                    <mat-label>Body</mat-label>
+                    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                        cdkAutosizeMaxRows="50" placeholder="Please provide the body for the API"
+                        formControlName="body"></textarea>
+                </mat-form-field>
+                <div class="same-line">
+                    <button matStepperPrevious
+                        class="save-button text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Back</button>
+                    <button matStepperNext
+                        class="save-button text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Next</button>
+                </div>
+            </form>
+        </mat-step>
+
+        <mat-step label="Params">
+            <form class="mt-2" [formGroup]="paramsForm">
+                <mat-form-field class="full-width">
+                    <mat-label>Params</mat-label>
+                    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                        cdkAutosizeMaxRows="50" placeholder="Please provide the params for the API"
+                        formControlName="params"></textarea>
+                </mat-form-field>
+                <div class="same-line">
+                    <button matStepperPrevious
+                        class="save-button text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Back</button>
+                </div>
+            </form>
+        </mat-step>
+    </mat-stepper>
+</mat-dialog-content>

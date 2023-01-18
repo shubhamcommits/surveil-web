@@ -38,7 +38,7 @@ export class AppCardComponent implements OnInit {
   async removeApp(appId: any) {
     Swal.fire({
       title: 'Are you sure?',
-      text: "This will remove the entire app, all the related APIs, and scheduled Jobs!",
+      text: "This will remove the entire app and their related resources!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#1d4ed8',
@@ -48,7 +48,6 @@ export class AppCardComponent implements OnInit {
       if (result.isConfirmed) {
         this.removeAppFunction(appId)
           .then((app) => {
-            console.log(app)
             Swal.fire(
               'Deleted!',
               'Your app has been removed from the system!',

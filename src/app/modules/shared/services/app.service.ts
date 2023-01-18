@@ -60,6 +60,13 @@ export class AppService {
   }
 
   /**
+   * This function is responsible for updating the service details present on the server
+   */
+  updateService(serviceId: any, serviceData: any) {
+    return this._HTTP.put(this.BASE_SERVICE_API_URL + `/${serviceId}`, serviceData).toPromise()
+  }
+
+  /**
    * This function is responsible for requesting the services falling under one application from the server
    */
   fetchUserServices(appId: any) {
@@ -80,6 +87,12 @@ export class AppService {
   getApi(apiId: any) {
     return this._HTTP.get(this.BASE_API_URL + `/${apiId}`).toPromise()
   }
+
+  /**
+   * This function is responsible for removing the api from the server
+   * @param apiId 
+   * @returns 
+   */
   removeApi(apiId :any){
     return this._HTTP.delete(this.BASE_API_URL + `/${apiId}`).toPromise()
   }

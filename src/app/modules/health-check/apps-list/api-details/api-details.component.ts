@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { AppService } from 'src/app/modules/shared/services/app.service';
 import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
+import { ApiAdvancedDetailsComponent } from './api-advanced-details/api-advanced-details.component';
 
 @Component({
   selector: 'app-api-details',
@@ -15,16 +17,17 @@ export class ApiDetailsComponent implements OnInit {
     private _Route: ActivatedRoute,
     private _Injector: Injector,
     private _Router: Router,
+    public _Dialog: MatDialog
   ) { }
 
   // API Data
   api: any
 
-   // App ID
-   appId = this._Route.snapshot.paramMap.get('appId')
-   serviceId = this._Route.snapshot.paramMap.get('serviceId')
-    // // Redirect URL
-    // redirectURL: any
+  // App ID
+  appId = this._Route.snapshot.paramMap.get('appId')
+  serviceId = this._Route.snapshot.paramMap.get('serviceId')
+  // // Redirect URL
+  // redirectURL: any
 
   // API ID
   apiId = this._Route.snapshot.paramMap.get('apiId')
@@ -57,14 +60,10 @@ export class ApiDetailsComponent implements OnInit {
       this.api.response.forEach((response: any, index: any) => {
         this.chartData[0].push(response.status)
         this.chartLabels.push(index)
-      }) 
+      })
 
       // Append the legends
       this.chartLegends = ['Status Code']
-
-      console.log(this.chartData, this.chartLabels)
-    } else {
-      console.log(" No result found")
     }
 
     // Stop the Loader
@@ -98,22 +97,11 @@ export class ApiDetailsComponent implements OnInit {
     })
   }
 
-  // redirectUser() {
-   
-  //   if (this.redirectURL) {
-  //     this._Router.navigateByUrl(this.redirectURL)
-  //       .catch(() => this._Router.navigate(['/custom-apis']))
-  //       console.log("User redirected")
-  //   } else {
-  //     this._Router.navigate(['/dashboard/home'])
-  //   }
-  // }
-
-
   async changeApiStatus($event: any) {
     let status = $event.checked
     await this.changeApiStatusServiceFunction(status, this.api.time_interval)
   }
+
   removeApiFunction(appId: any) {
     return new Promise((resolve, reject) => {
       let api = this._Injector.get(AppService)
@@ -125,6 +113,31 @@ export class ApiDetailsComponent implements OnInit {
           reject(err)
         })
     })
+  }
+
+  /**
+   * This function opens the API Advanced Details Data
+   * @param event 
+   */
+  openApiAdvancedDetailDialog(event: any) {
+    const dialogRef = this._Dialog.open(ApiAdvancedDetailsComponent, {
+      maxWidth: '100%',
+      maxHeight: '100%',
+      width: '80%',
+      height: '80%',
+      autoFocus: true,
+      hasBackdrop: true,
+      disableClose: true,
+      closeOnNavigation: true,
+      data: event || '',
+      panelClass: 'modal-class'
+    });
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        console.log('API Detail Data', data)
+      }
+    )
   }
 
   async removeApp(appId: any) {
@@ -147,8 +160,8 @@ export class ApiDetailsComponent implements OnInit {
               'success'
             ).then(() => {
               this.removeAppEmitter.emit(api)
-           
-              this._Router.navigate(['/health-check' , 'apps' , this.appId , 'services' , this.serviceId ])
+
+              this._Router.navigate(['/health-check', 'apps', this.appId, 'services', this.serviceId])
             })
           })
       }

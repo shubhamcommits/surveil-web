@@ -21,30 +21,12 @@
                 <mat-option value="POST">POST</mat-option>
                 <mat-option value="PUT">PUT</mat-option>
                 <mat-option value="DELETE">DELETE</mat-option>
+                <mat-option value="PATCH">PATCH</mat-option>
+                <mat-option value="COPY">COPY</mat-option>
+                <mat-option value="HEAD">HEAD</mat-option>
+                <mat-option value="OPTIONS">OPTIONS</mat-option>
             </mat-select>
             <mat-error *ngIf="!method.valid && method.touched">
-                {{ titleAlert }}
-            </mat-error>
-        </mat-form-field>
-        <mat-form-field class="full-width">
-            <mat-label>Opco</mat-label>
-            <mat-select [(value)]="opco" formControlName="opco">
-                <mat-option value="CG">Congo - CG</mat-option>
-                <mat-option value="GA">Gabon - GA</mat-option>
-                <mat-option value="KE">Kenya - KE</mat-option>
-                <mat-option value="MG">Madagascar - MG</mat-option>
-                <mat-option value="MW">Malawi - MW</mat-option>
-                <mat-option value="NE">Niger - NE</mat-option>
-                <mat-option value="NG">Nigeria - NG</mat-option>
-                <mat-option value="NGPSB">NGPSB</mat-option>
-                <mat-option value="RW">Rawanda - RW</mat-option>
-                <mat-option value="SC">Seychelles - SC</mat-option>
-                <mat-option value="TD">Chad - TD</mat-option>
-                <mat-option value="TZ">Tanzania - TZ</mat-option>
-                <mat-option value="UG">Uganda - UG</mat-option>
-                <mat-option value="ZM">Zambia - ZM</mat-option>
-            </mat-select>
-            <mat-error *ngIf="!opco.valid && opco.touched">
                 {{ titleAlert }}
             </mat-error>
         </mat-form-field>
@@ -52,16 +34,6 @@
             <mat-label>End Point</mat-label>
             <input matInput placeholder="Please fill the end-point of the API" formControlName="end_point">
             <mat-error *ngIf="!end_point.valid && end_point.touched">
-                {{ titleAlert }}
-            </mat-error>
-        </mat-form-field>
-        <mat-form-field class="full-width">
-            <mat-label>Authorization from UM?</mat-label>
-            <mat-select [(value)]="authorization_via_um" formControlName="authorization_via_um">
-                <mat-option value="Yes">Yes</mat-option>
-                <mat-option value="No">No</mat-option>
-            </mat-select>
-            <mat-error *ngIf="!authorization_via_um.valid && authorization_via_um.touched">
                 {{ titleAlert }}
             </mat-error>
         </mat-form-field>
